@@ -44,21 +44,20 @@ module.exports = (grunt) ->
         processes.push util.package(artifact, @files, { path: cfg.path } )
 
     if @args.length and _.contains @args, 'publish'
-      _.forEach options.publish, (cfg) =>
-        artifactCfg = {}
-        _.assign artifactCfg, ArtifactoryArtifact.fromString(cfg.id) if cfg.id
-        _.assign artifactCfg, cfg, options
+      artifactCfg = {}
+      _.assign artifactCfg, ArtifactoryArtifact.fromString(options.id)
+      _.assign artifactCfg, options
 
-        artifact = new ArtifactoryArtifact artifactCfg
-        deferred = Q.defer()
-        util.package(artifact, @files, { path: cfg.path }).then () ->
-            util.publish(artifact, { path: cfg.path, credentials: { username: options.username, password: options.password }, parameters: options.parameters}).then ()->
-                deferred.resolve()
-            .fail (err) ->
-                deferred.reject(err)
-        .fail (err) ->
-            deferred.reject(err)
-        processes.push deferred.promise
+      artifact = new ArtifactoryArtifact artifactCfg
+      deferred = Q.defer()
+      util.package(artifact, @files, { path: options.path }).then () ->
+          util.publish(artifact, { path: options.path, credentials: { username: options.username, password: options.password }, parameters: options.parameters}).then ()->
+              deferred.resolve()
+          .fail (err) ->
+              deferred.reject(err)
+      .fail (err) ->
+          deferred.reject(err)
+      processes.push deferred.promise
 
     Q.all(processes).then(() ->
       done()

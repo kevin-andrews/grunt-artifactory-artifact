@@ -84,7 +84,7 @@ module.exports = (grunt) ->
 
     generateHashes(options.path + filename).then (hashes) ->
 
-      url = urlPath + filename
+      url = urlPath + filename + parameters
       length = fs.statSync(options.path + filename).size
       headers = {"X-Checksum-Sha1": hashes.sha1, "X-Checksum-Md5": hashes.md5, "Content-Length": length}
       promises = [
