@@ -12,49 +12,6 @@ module.exports = (grunt) ->
   _ = require('lodash')
   _s = require('underscore.string');
 
-  extract = (ext, temp_path, path, deferred) ->
-    grunt.verbose.writeln "Extract #{ext} #{temp_path}, #{path}"
-    if ext is 'tgz'
-      @archive = new targz()
-      @archive.extract(temp_path, path, (err) ->
-        grunt.verbose.writeln "Extraction done #{err}"
-        if(err)
-          deferred.reject { message: 'Error extracting archive' + err }
-        deferred.resolve()
-      )
-
-    else if ext in ['zip','jar','war']
-      archive = new zip(temp_path)
-      archive.extractAllTo(path, true);
-      deferred.resolve()
-
-    else
-      deferred.resolve()
-
-  downloadFile = (options, artifact, path, temp_path, decompress) ->
-    deferred = Q.defer()
-
-    grunt.log.writeln "Downloading #{artifact.buildUrl()}"
-    file = request.get(artifact.buildUrl(), options, (error, response) ->
-      if error
-        deferred.reject {message: 'Error making http request: ' + error}
-      else if response.statusCode isnt 200
-        deferred.reject {message: 'Request received invalid status code: ' + response.statusCode}
-
-      grunt.verbose.writeln "Download complete"
-      file.end
-    ).pipe(fs.createWriteStream(temp_path))
-
-    file.on 'close', ()->
-      if decompress
-        grunt.verbose.writeln "Start Extracting..."
-        extract artifact.ext, temp_path, path, deferred
-      else
-        deferred.resolve()
-
-    grunt.verbose.writeln "Downloading ..."
-    deferred.promise
-
   upload = (data, url, credentials, headers, isFile = true) ->
     deferred = Q.defer()
 
@@ -124,34 +81,6 @@ module.exports = (grunt) ->
     deferred.promise
 
   return {
-
-  ###*
-  * Download an artifactory artifact and extract it to a path
-  * @param {ArtifactoryArtifact} artifact The artifactory artifact to download
-  * @param {String} path The path the artifact should be extracted to
-  *
-  * @return {Promise} returns a Q promise to be resolved when the file is done downloading
-  ###
-  download: (artifact, path, options, decompress = on) ->
-    deferred = Q.defer()
-
-    if grunt.file.exists("#{path}/.version") and (grunt.file.read("#{path}/.version").trim() is artifact.version)
-      grunt.log.writeln "Up-to-date: #{artifact}"
-      return
-
-    grunt.file.mkdir path
-
-    temp_path = "#{path}/#{artifact.buildArtifactUri()}"
-
-    unpack = if decompress then "and unpack " else ""
-    downloadFile(options, artifact, path, temp_path, decompress).then( ->
-      grunt.log.writeln "Download #{unpack}done."
-      deferred.resolve()
-    ).fail (error) ->
-      grunt.log.writeln "Download #{unpack}Error: #{error}"
-      deferred.reject error
-
-    deferred.promise
 
   ###*
   * Package a path to artifact

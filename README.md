@@ -1,7 +1,6 @@
 # grunt-artifactory-artifact
-Forked from grunt-nexus-artifact https://github.com/RallySoftware/grunt-nexus-artifact
-Slightly enhanced error handling, added authentication and defaults to artifactory context paths
-> Download artifacts from JFrog Artifactory artifact repository.
+Forked from grunt-artifactory-artifact https://github.com/leedavidr/grunt-artifactory-artifact
+This is a publish-only version, fixing a few bugs from the original (e.g. parameters now work).
 > Publish artifacts to a JFrog Artifactory artifact repository.
 > Only works with Mac and Linux
 
@@ -14,14 +13,14 @@ This plugin requires Grunt `~0.4.0`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```shell
-npm install grunt-artifactory-artifact --save-dev
+npm install grunt-artifactory-publish --save-dev
 ```
 
 or add the following to your package.json file:
 ```js
 {
   "devDependencies": {
-    "grunt-artifactory-artifact": "0.2.0"
+    "grunt-artifactory-publish": "0.8.0"
   }
 }
 ```
@@ -29,116 +28,8 @@ or add the following to your package.json file:
 Once the plugin has been installed, enabled it inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-artifactory-artifact');
+grunt.loadNpmTasks('grunt-artifactory-publish');
 ```
-
-## Artifactory Fetch Task
-_Run this task with the `grunt artifactory:target:fetch` command._
-
-### Examples
-```js
-artifactory: {
-  client: {
-    url: 'http://artifactory.google.com:8080',
-    repository: 'jslibraries',
-    options: {
-      fetch: [
-        { id: 'com.google.js:jquery:tgz:1.8.0', path: 'public/lib/jquery' }
-      ]
-    }
-  }
-}
-```
-
-In grunt, options cascade. If all of your artifacts come from the same artifactory server, you can do the following:
-```js
-artifactory: {
-  options: {
-    url: 'http://artifactory.google.com:8080'
-  },
-  client: {
-    options: {
-      repository: 'jslibraries',
-      fetch: [
-        { id: 'com.google.js:jquery:tgz:1.8.0', path: 'public/lib/jquery' }
-      ]
-    }
-  },
-  build: {
-    options: {
-      repository: 'jstools',
-      fetch: [
-        { id: 'com.google.js:closure:tgz:0.1.0', path: 'tools/closure' }
-      ]
-    }
-  }
-}
-```
-
-
-### Options
-
-There are a number of options available.
-
-#### url
-Type: `String`
-
-This defines the url of your artifactory repository. This should be the base URL plus port. Ex: `http://your-artifactory-repository:8080`
-
-#### repository
-Type: `String`
-
-This defines the name of the repository. _Since this task uses the REST API, the repository is not inferred_
-
-#### fetch
-Type: `Array{Object}`
-
-This defines an array of artifactory artifacts to be retrieved from artifactory. Each artifact has config options:
-
-##### group_id
-Type: `String`
-
-This defines the group_id of the artifact. Ex: `com.google.js`
-
-##### name
-Type: `String`
-
-This defines the name of the artifact. Ex: `jquery`
-
-##### ext
-Type: `String`
-
-This defines the extension of the artifact. Ex: `tgz`
-
-##### classifier
-Type: `String`
-
-This defines the optional classifier to the artifact name. Ex: `javadoc`
-
-##### version
-Type: `String`
-
-This defines the version of the artifact. Ex: `1.8.0`
-
-##### id
-Type: `String`
-
-This is a shorthand for `group_id`, `name`, `ext`, `version` and optionally a `classifier`. This defines the id string of the artifact in the following format:
-```{group_id}:{name}:{ext}:[{classifier}:]{version}```
-
-Ex:
-```
-com.google.js:jquery:tgz:1.8.0
-```
-
-##### path
-Type: `String`
-
-This defines the path where the artifact will be extracted to. Ex: `public/lib/jquery`
-
-## Artifactory package task
-The package flag will run the `publish` config to package artifacts. It uses [grunt-contrib-compress](https://github.com/gruntjs/grunt-contrib-compress) so the file configuration will be the same.
-_Run this task with the `grunt artifactory:target:package` command._
 
 ## Artifactory publish task
 The publish flag will run the publish config to package and push artifacts up to artifactory. It uses [grunt-contrib-compress](https://github.com/gruntjs/grunt-contrib-compress) so the file configuration will be the same.
@@ -158,11 +49,9 @@ artifactory: {
       { src: ['builds/**/*'] }
     ],
     options: {
-      publish: [{
-          id: 'com.mycompany.js:built-artifact:tgz',
-          version: 'my-version', 
-          path: 'dist/'
-      }],
+      id: 'com.mycompany.js:built-artifact:tgz',
+      version: 'my-version',
+      path: 'dist/'
       parameters: [
         'build.name=built-artifact',
         'version=my-version',

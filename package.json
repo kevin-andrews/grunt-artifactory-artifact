@@ -1,5 +1,5 @@
 {
-  "name": "grunt-artifactory-artifact",
+  "name": "grunt-artifactory-publish",
   "version": "0.8.0",
   "description": "A grunt plugin that helps with simple artifactory artifacts",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com/leedavidr/grunt-artifactory-artifact"
+    "url": "git@github.com/kevin-andrews/grunt-artifactory-publish"
   },
   "keywords": [
     "grunt",
     "artifactory"
   ],
   "author": {
-    "name": "David Lee",
-    "email": "davidrlee@gmail.com"
+    "name": "Kevin Andrews",
+    "email": "kevin.andrews.npm@gmail.com"
   },
   "license": "MIT",
   "dependencies": {
@@ -29,9 +29,9 @@
     "lodash": "~2.4.1",
     "underscore.string": "~2.3.3"
   },
-  "readme": "# grunt-artifactory-artifact\n\n> Forked from grunt-nexus-artifact by Nicholas Boll\n",
+  "readme": "# grunt-artifactory-artifact\n\n> Forked from grunt-artifactory-artifact by leedavidr\n",
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/leedavidr/grunt-artifactory-artifact/issues"
+    "url": "https://github.com/kevin-andrews/grunt-artifactory-publish/issues"
   }
 }
