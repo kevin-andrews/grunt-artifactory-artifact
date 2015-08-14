@@ -45,7 +45,7 @@ module.exports = (grunt) ->
 
     if @args.length and _.contains @args, 'publish'
       artifactCfg = {}
-      _.assign artifactCfg, ArtifactoryArtifact.fromString(options.id)
+      _.assign artifactCfg, ArtifactoryArtifact.fromString(options.id) if options.id
       _.assign artifactCfg, options
 
       artifact = new ArtifactoryArtifact artifactCfg
