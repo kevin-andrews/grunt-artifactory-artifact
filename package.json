@@ -1,7 +1,7 @@
 {
   "name": "grunt-artifactory-publish",
   "version": "0.8.0",
-  "description": "A grunt plugin that helps with simple artifactory artifacts",
+  "description": "A grunt plugin that helps with publishing artifactory artifacts.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
