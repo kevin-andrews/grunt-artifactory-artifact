@@ -18,6 +18,7 @@ module.exports = (grunt) ->
       versionPattern: '%a-%v%c.%e'
       username: ''
       password: ''
+      publishSingleFile: false
 
     processes = []
 
@@ -28,12 +29,19 @@ module.exports = (grunt) ->
 
       artifact = new ArtifactoryArtifact artifactCfg
       deferred = Q.defer()
-      util.package(artifact, @files, { path: options.path }).then () ->
-          util.publish(artifact, { path: options.path, credentials: { username: options.username, password: options.password }, parameters: options.parameters}).then ()->
-              deferred.resolve()
+      publishOptions = { path: options.path, credentials: { username: options.username, password: options.password }, parameters: options.parameters}
+      if options.publishSingleFile
+        util.publish(artifact, publishOptions).then ()->
+          deferred.resolve()
           .fail (err) ->
-              deferred.reject(err)
-      .fail (err) ->
+          deferred.reject(err)
+      else
+        util.package(artifact, @files, { path: options.path }).then () ->
+          util.publish(artifact, publishOptions).then ()->
+            deferred.resolve()
+            .fail (err) ->
+            deferred.reject(err)
+          .fail (err) ->
           deferred.reject(err)
       processes.push deferred.promise
 

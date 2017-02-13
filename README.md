@@ -1,8 +1,6 @@
 # grunt-artifactory-artifact
-Forked from grunt-artifactory-artifact https://github.com/leedavidr/grunt-artifactory-artifact
-This is a publish-only version, fixing a few bugs from the original (e.g. parameters now work).
-> Publish artifacts to a JFrog Artifactory artifact repository.
-> Only works with Mac and Linux
+Forked from grunt-artifactory-artifact https://github.com/leedavidr/grunt-artifactory-publish
+Enables to publish a file (e.g. a compressed archive or pom)
 
 ## Why?
 If you're using grunt for frontend development and Java for the backend, it is convenient to consolidate dependencies into one repository.
@@ -59,6 +57,13 @@ artifactory: {
       ]
     }
   }
+  pom: {
+	options: {
+		id: com.mycompany.js:built-artifact:pom',
+		version: 'my-version',
+		publishSingleFile: true
+	}
+  }
 }
 ```
 
@@ -86,9 +91,13 @@ Type 'Boolean'
 
 When 'true', the artifact will attempt to be decompressed. Defaults to 'true'. Currently supports extensions 'tgz','jar','zip', and 'war'.
 
-
 This parameter comes from `grunt-contrib-compress`. You can read about it at [github.com/gruntjs/grunt-contrib-compress](https://github.com/gruntjs/grunt-contrib-compress).
 There are some differences from the config on `grunt-contrib-compress`. First of all, `ext` is used from the artifact, so it doesn't need to be specified. `mode` is currently not supported. It will auto-configure based on the extension.
+
+#### publishSingleFile
+Type 'Boolean'
+
+Publishes the file directly to the Artifactory, skipping the compression step. Useful to publish e.g. a single .pom file (filename in this example is 'built-artifact-<my-version>.pom') to the Artifactory
 
 # Release History
 * 2013-08-08  v0.2.0  Added support for publishing artifacts
