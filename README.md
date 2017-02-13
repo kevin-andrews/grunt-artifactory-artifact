@@ -59,7 +59,7 @@ artifactory: {
   }
   pom: {
 	options: {
-		id: com.mycompany.js:built-artifact:pom',
+		id: 'com.mycompany.js:built-artifact:pom',
 		version: 'my-version',
 		publishSingleFile: true
 	}
