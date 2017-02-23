@@ -35,6 +35,8 @@ module.exports = (grunt) ->
           deferred.resolve()
           .fail (err) ->
             deferred.reject(err)
+        .fail (err) ->
+          deferred.reject(err)
       else
         util.package(artifact, @files, { path: options.path }).then () ->
           util.publish(artifact, publishOptions).then ()->
