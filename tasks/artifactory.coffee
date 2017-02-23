@@ -34,15 +34,15 @@ module.exports = (grunt) ->
         util.publish(artifact, publishOptions).then ()->
           deferred.resolve()
           .fail (err) ->
-          deferred.reject(err)
+            deferred.reject(err)
       else
         util.package(artifact, @files, { path: options.path }).then () ->
           util.publish(artifact, publishOptions).then ()->
             deferred.resolve()
             .fail (err) ->
-            deferred.reject(err)
+              deferred.reject(err)
           .fail (err) ->
-          deferred.reject(err)
+            deferred.reject(err)
       processes.push deferred.promise
 
     Q.all(processes).then(() ->
