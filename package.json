@@ -20,13 +20,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "q": "0.9.3",
+    "adm-zip": "~0.4.3",
     "grunt": "~0.4.1",
-    "grunt-contrib-compress": "~0.13.0",
+    "grunt-contrib-compress": "^1.4.3",
+    "lodash": "~2.4.1",
+    "q": "0.9.3",
     "request": "~2.27.0",
     "tar.gz": "~0.1.1",
-    "adm-zip": "~0.4.3",
-    "lodash": "~2.4.1",
     "underscore.string": "~2.3.3"
   },
   "readme": "# grunt-artifactory-artifact\n\n> Forked from grunt-artifactory-artifact by leedavidr\n",
